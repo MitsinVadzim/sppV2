@@ -19,12 +19,28 @@ database
     console.error('Unable to connect to the database:', err)
   })
 
-// Define our Post model
+// Define our Flight model
 // id, createdAt, and updatedAt are added by sequelize automatically
-let Post = database.define('posts', {
-  title: Sequelize.STRING,
-  body: Sequelize.TEXT
+let Flight = database.define('flights', {
+  fromPlace: Sequelize.STRING,
+  toPlace: Sequelize.STRING,
+  rating: Sequelize.INTEGER,
+  departureDate: Sequelize.DATE
 })
+
+let User = database.define('users', {
+  login: Sequelize.STRING,
+  password: Sequelize.STRING
+})
+
+let Ticket = database.define('tickets', {
+  price: Sequelize.DOUBLE
+})
+
+User.hasMany(Ticket)
+Flight.hasMany(Ticket, {onDelete: 'cascade'})
+Ticket.belongsTo(User)
+Ticket.belongsTo(Flight)
 
 // Initialize epilogue
 epilogue.initialize({
@@ -33,19 +49,33 @@ epilogue.initialize({
 })
 
 // Create the dynamic REST resource for our Post model
+let flightResource = epilogue.resource({
+  model: Flight,
+  endpoints: ['/flights', '/flights/:id']
+})
+
+let ticketResource = epilogue.resource({
+  model: Ticket,
+  endpoints: ['/tickets', '/tickets/:id'],
+  include: [{
+    model: Flight
+  }, {
+    model: User
+  }]
+})
+
+// ticketResource.use(tickerMiddleware)
+
 let userResource = epilogue.resource({
-  model: Post,
-  endpoints: ['/posts', '/posts/:id']
+  model: User,
+  endpoints: ['/users', '/users/:id']
 })
 
 // Resets the database and launches the express app on :8081
-// database
-//   .sync({ force: true })
-//   .then(() => {
-//     app.listen(8081, () => {
-//       console.log('listening to port localhost:8081')
-//     })
-//   })
-app.listen(8081, () => {
-  console.log('listening to port localhost:8081')
-})
+database
+  .sync({ force: true })
+  .then(() => {
+    app.listen(8081, () => {
+      console.log('listening to port localhost:8081')
+    })
+  })

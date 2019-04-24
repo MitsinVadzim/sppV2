@@ -15,19 +15,52 @@ export default {
       return req.data
     })
   },
-  getPosts () {
-    return this.execute('get', '/posts')
+  getFlights () {
+    console.log(this.resource)
+    return this.execute('get', '/flights')
   },
-  getPost (id) {
-    return this.execute('get', `/posts/${id}`)
+  getFlight (id) {
+    return this.execute('get', `/flights/${id}`)
   },
-  createPost (data) {
-    return this.execute('post', '/posts', data)
+  createFlight (data) {
+    return this.execute('post', '/flights', data)
   },
-  updatePost (id, data) {
-    return this.execute('put', `/posts/${id}`, data)
+  updateFlight (id, data) {
+    return this.execute('put', `/flights/${id}`, data)
   },
-  deletePost (id) {
-    return this.execute('delete', `/posts/${id}`)
+  deleteFlight (id) {
+    return this.execute('delete', `/flights/${id}`)
+  },
+
+  getTickets () {
+    return this.execute('get', '/tickets')
+  },
+  getTicket (id) {
+    return this.execute('get', `/tickets/${id}`)
+  },
+  createTicket (data) {
+    return this.execute('post', '/tickets', data)
+  },
+  updateTicket (id, data) {
+    return this.execute('put', `/tickets/${id}`, data)
+  },
+  deleteTicket (id) {
+    return this.execute('delete', `/tickets/${id}`)
+  },
+
+  getUsers () {
+    return this.execute('get', '/users')
+  },
+  getUser (id) {
+    return this.execute('get', `/users/${id}`)
+  },
+  createUser (data) {
+    return this.execute('post', '/users', data)
+  },
+  updateUser (id, data) {
+    return this.execute('put', `/users/${id}`, data)
+  },
+  deleteUser (id) {
+    return this.execute('delete', `/users/${id}`)
   }
 }
